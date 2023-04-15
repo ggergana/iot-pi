@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to the iot-pi </title>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css" integrity="sha512-S+6tczgFy46S7H1OK+0nB7ZgY4J4V/XD9ufHkPv7tQzOXfTgTtFzTtTJThs+otZoHUeLnSWmkvL9J1HgBnwt+g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f7f7f7;
+        }
+
+
+        footer {
+            margin-top: 5px;
+            font-size: 11px;
+            font-family: 'Montserrat', sans-serif;
+            background-color: #fff;
+
+        }
+
+        .myFooter {
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .myFooter p {
+            margin: 5px;
+        }
+
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .row  {
+            margin: 5%;
+        }
+
+        h1 {
+            margin-top: 20px;
+            margin-bottom: 60px;
+            font-size: 34px;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .temp-humidity-container {
+            display: flex;
+            justify-content: space-between;
+
+        }
+
+        .images {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .temperature,
+        .humidity {
+            margin-right: 10px;
+        }
+
+
+        .last-updated {
+            font-size: 12px;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .motion-last-updated {
+            font-size: 12px;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .motion-last-updated {
+            display: none;
+        }
+
+        .led-toggle {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 30px;
+            flex-wrap: wrap;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .led-toggle span {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .toggle-button {
+            display: inline-block;
+            width: 80px;
+            height: 34px;
+            position: relative;
+            border-radius: 17px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+        }
+
+        .toggle-button input {
+            display: none;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 30px;
+            height: 30px;
+            background-color: var(--led-color);
+            border-radius: 50%;
+            transition: 0.4s;
+            z-index: 1;
+        }
+
+        .toggle-button input:checked+.toggle-slider {
+            transform: translateX(46px);
+            background-color: #ccc;
+        }
+
+        .toggle-background {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #ccc;
+            border-radius: 17px;
+            transition: 0.4s;
+        }
+
+        .toggle-button input:checked~.toggle-background {
+            background-color: var(--led-color);
+        }
+
+        .led-toggle .blue {
+            --led-color: blue;
+        }
+
+        .led-toggle .green {
+            --led-color: green;
+        }
+
+        .led-toggle .yellow {
+            --led-color: yellow;
+        }
+
+        .led-toggle .white {
+            --led-color: white;
+        }
+
+        .led-toggle .red {
+            --led-color: red;
+        }
+
+        .toggle-label {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            margin-right: 10px;
+        }
+
+        /* Toggle button background */
+        #motion-sensor-toggle + .toggle-slider + .toggle-background {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            background-color: #ccc;
+            border-radius: 34px;
+            transition: background-color 0.2s;
+        }
+
+        /* Toggle button background when checked */
+        #motion-sensor-toggle:checked + .toggle-slider + .toggle-background {
+            background-color: #4CAF50;
+        }
+
+        #motion-sensor-toggle:checked + .toggle-slider {
+            background-color: #2196F3;
+        }
+
+        #motion-sensor-toggle + .toggle-slider {
+            background-color: #0A2338FF;
+        }
+
+        /* Move the slider when checked */
+        #motion-sensor-toggle:checked + .toggle-slider:before {
+            transform: translateX(26px);
+        }
+
+        /* Add "ON" text when checked */
+        #motion-sensor-toggle:checked + .toggle-slider:after {
+            content: 'ON';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 10px;
+            color: #fff;
+        }
+
+        /* Add "OFF" text when not checked */
+        #motion-sensor-toggle + .toggle-slider:after {
+            content: 'OFF';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 10px;
+            color: #fff;
+        }
+
+
+
+        @media (min-width: 992px) {
+
+            .humidity {
+                margin-right: 50%;
+            }
+        }
+
+
+        /* Smaller font size for screens less than or equal to 768px wide */
+        @media screen and (max-width: 768px) {
+            h1 {
+                font-size: 22px;
+            }
+
+            h2 {
+                font-size: 18px;
+            }
+
+            .myFooter {
+                font-size:6px;
+                flex-direction: row;
+                justify-content: space-between;
+            }
+
+            .myFooter p {
+                margin: 0;
+            }
+        }
+
+
+        @media (max-width: 576px) {
+            .toggle-label {
+                width: 100%;
+                margin-bottom: 20px;
+                text-align: center;
+            }
+
+            .toggle-label.blue, .toggle-label.red {
+                width: 100%;
+                text-align: center;
+            }
+
+            h1 {
+                font-size: 18px;
+            }
+
+            h1 {
+                font-size: 14px;
+            }
+        }
+    </style>
+    <script src="main.js" defer></script>
+</head>
+
+<body>
+<div class="container">
+    <div class="row align-items-center">
+        <div class="col-md-3 d-flex justify-content-center justify-content-md-start mb-3 mb-md-0">
+            <div class="images">
+                <img src="htwg_logo.jpg" alt="htwg-konstanz-logo" class="img-fluid" style="max-width: 65%" >
+                <img src="pi-logo-transp.png" alt="second-image" class="img-fluid" style="max-width: 12%" >
+            </div>
+        </div>
+        <div class="col-md-9">
+
+            <h1>Welcome to the iot-pi</h1>
+
+            <div id="pi-status"></div>
+
+            <div id="pi-content" style="display: none;">
+                <!-- Temperature Sensor Section -->
+                <div id="temperature-section">
+                    <h2>Temperature Sensor</h2>
+                    <p>Data is being updated every five seconds. The sensor should start automatically and provide information about temperature and humidity in the room, where the Raspberry is located. </p>
+                    <div class="temp-humidity-container">
+                        <p class="temperature" id="temperature">Loading...</p>
+                        <p class="humidity" id="humidity">Loading...</p>
+                    </div>
+                    <p class="last-updated" id="last-updated"></p>
+                </div>
+
+                <!-- LED Toggle Section -->
+                <div id="led-toggle-section">
+                    <h2>LED Toggle</h2>
+                    <p>Turn on or off the LEDs by toggling the buttons. Button colors match the color of the lights. Not suitable for multiple clients. </p>
+                    <div class="led-toggle">
+                        <div class="toggle-label blue">
+                            <label class="toggle-button">
+                                <input type="checkbox" onclick="toggleLED('blue', this)">
+                                <span class="toggle-slider"></span>
+                                <span class="toggle-background"></span>
+                            </label>
+                        </div>
+                        <div class="toggle-label green">
+                            <label class="toggle-button">
+                                <input type="checkbox" onclick="toggleLED('green', this)">
+                                <span class="toggle-slider"></span>
+                                <span class="toggle-background"></span>
+                            </label>
+                        </div>
+                        <div class="toggle-label yellow">
+                            <label class="toggle-button">
+                                <input type="checkbox" onclick="toggleLED('yellow', this)">
+                                <span class="toggle-slider"></span>
+                                <span class="toggle-background"></span>
+                            </label>
+                        </div>
+                        <div class="toggle-label white">
+                            <label class="toggle-button">
+                                <input type="checkbox" onclick="toggleLED('white', this)">
+                                <span class="toggle-slider"></span>
+                                <span class="toggle-background"></span>
+                            </label>
+                        </div>
+                        <div class="toggle-label red">
+                            <label class="toggle-button">
+                                <input type="checkbox" onclick="toggleLED('red', this)">
+                                <span class="toggle-slider"></span>
+                                <span class="toggle-background"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Motion Sensor Section -->
+                <div id="motion-sensor-section">
+                    <h2>Motion Sensor</h2>
+                    <p>Toggle on/off the button below in order to enable/disable the motion sensor. When enabled, the server is being called out every three seconds and gives information about movement in the room where the Raspberry Pi is located. Not suitable for multiple clients.</p>
+                    <p class="motion-status" id="motion-status">Status: Disabled</p>
+                    <p class="motion-last-updated" id="motion-last-update"></p>
+                    <div class="toggle-label motion">
+                        <label class="toggle-button">
+                            <input type="checkbox" id="motion-sensor-toggle" onclick="toggleMotionSensor()">
+                            <span class="toggle-slider"></span>
+                            <span class="toggle-background"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <div class="myFooter">
+            <p>&copy; 2023 Gergana Germanova. All rights reserved.</p>
+            <p>Created as a part of a Bachelor's Thesis project at the Faculty of Informatics.</p>
+        </div>
+    </footer>
+
+</div>
+
+
+</body>
+
+</html>
