@@ -1,3 +1,5 @@
+//Server for sending heartbeat to heroku from Raspberry Pi. It is running only ot the Pi.
+
 const axios = require('axios');
 
 const SERVER_URL = 'https://iot-pi.herokuapp.com';
