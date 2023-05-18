@@ -12,33 +12,21 @@ This Node.js application consists of two servers, `heroku_server.js` and `my_ser
 
 ## Installation
 
-// Include detailed installation steps here.
 
-## Configuration
+- node my-server.js -> this starts the main application, it has to be on 
+runnign on the Rapsberry Pi device
+- node heroku_server.js starts the server that acts as a client to my-server.js, needed if one needs to access the features remotely
 
 1. Make sure you have [Node.js](https://nodejs.org/) installed.
 2. Clone the repository.
 3. Navigate to the project directory and run `npm install` to install the required dependencies.
-4. Run the server using `npm start` or `node heroku_server.js`.
+4. Run the server using `node my_server.js`. This is the main application and in order for the programm to function, it has to run on the Raspberry Pi
 5. The server will start running on port 3000 or the port specified in the `PORT` environment variable.
-Package.json is configured to launch heroku_server.js this has to be changed if the projec is being run locally by npm start. Put my_server.js there as this is the main file, 
 
-## Usage
-
-// Include usage instructions and examples here.
-
-### LED Toggling
-
-// Include instructions and examples for LED toggling.
-
-### Motion Sensor
-
-// Include instructions and examples for motion sensor information.
-
-### Temperature Sensor
-
-// Include instructions and examples for temperature sensor information.
-
+**Package.json is configured to launch `node heroku_server.js` therefor the command `npm run` won't work locally. This is configured so, because the same repo is deployed to Heroku
+. However, there the main file is `heroku_server.js` as it is the script sending requests to  `my_server.js`
+and enabling remote connection. If the app is intended to be used locally one could alter the package.json file so that `node my_server.js` and omit `heroku_server.js`.
+   
 ## API
 
 ### 1. GET Motion Status
@@ -149,19 +137,7 @@ Toggles the motion sensor on or off.
 ```
 
 
-## Troubleshooting
-
-// Include troubleshooting tips here.
-
-## Contributing
-
-// Include contribution guidelines here, if applicable.
-
-## License
-
-// Include license information here.
-
 ## Contact
 
-// Include contact information here.
+gerganagermanova01@gmail.com
 
