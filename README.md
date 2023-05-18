@@ -20,12 +20,12 @@ runnign on the Rapsberry Pi device
 1. Make sure you have [Node.js](https://nodejs.org/) installed.
 2. Clone the repository.
 3. Navigate to the project directory and run `npm install` to install the required dependencies.
-4. Run the server using `node my_server.js`. This is the main application and in order for the programm to function, it has to run on the Raspberry Pi
-5. The server will start running on port 3000 or the port specified in the `PORT` environment variable.
+4. Run the server using `node my_server.js`, if you are running it from a Raspberry Pi. This is the main application and in order for the program to function, it has to run on the Raspberry Pi
+5. Run the heroku server using `npm start` or `node heroku_server.js`, if you are running it from Laptop/PC or any non-Pi device.
+6. The server will start running on port 3000 or the port specified in the `PORT` environment variable.
 
-**Package.json is configured to launch `node heroku_server.js` therefor the command `npm run` won't work locally. This is configured so, because the same repo is deployed to Heroku
-. However, there the main file is `heroku_server.js` as it is the script sending requests to  `my_server.js`
-and enabling remote connection. If the app is intended to be used locally one could alter the package.json file so that `node my_server.js` and omit `heroku_server.js`.
+**Package.json is configured to launch `node heroku_server.js`. This is configured so, because the same repo is deployed to Heroku and this is the main file for any non Raspberry Pi device, which then acts as the client for the Pi-Server .
+If the app is intended to be used locally - from a Pi - one could alter the package.json file so that `node my_server.js` and omit `heroku_server.js`.
    
 ## API
 
